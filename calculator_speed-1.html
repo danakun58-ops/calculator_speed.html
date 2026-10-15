@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculator Speed</title>
+<style>
+:root{--bg:#100b20;--panel:#191a2e;--field:#10111b;--border:#39394e;--gold:#e5c51c;--text:#f4f4f8;--muted:#a7a8b7}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#090d14,var(--bg) 55%,#230b3a);font:16px system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text);min-height:100vh}
+header{padding:25px 18px 12px;text-align:center}header h1{margin:0;color:#ffe128;font-size:25px}header p{color:var(--muted);margin:6px 0 0;font-size:13px}
+main{width:min(720px,100%);margin:auto;padding:8px 12px 30px}.panel{background:rgba(25,26,46,.96);border:1px solid var(--border);border-radius:20px;padding:20px;margin:12px 0 18px;box-shadow:0 8px 24px #0002}
+h2{font-size:22px;text-align:center;color:#ffe128;margin:0 0 20px}label{display:block;font-weight:700;margin:15px 0 7px}select,input{width:100%;min-height:52px;background:var(--field);color:var(--text);border:1px solid #444458;border-radius:12px;padding:12px 15px;font:inherit;outline:none}select:focus,input:focus{border-color:var(--gold);box-shadow:0 0 0 2px #e5c51c20}
+input[type=text]{letter-spacing:.2px}.hint{font-size:12px;color:var(--muted);margin:7px 2px 0;line-height:1.5}.btn{width:100%;border:0;border-radius:12px;padding:16px;background:linear-gradient(100deg,#e2c51b,#a96c13);color:#211b09;font-weight:800;font-size:16px;margin-top:18px;cursor:pointer}.btn:active{transform:scale(.99)}
+.results{display:grid;grid-template-columns:1fr;gap:12px}.result{background:var(--field);border:1px solid #343448;border-radius:13px;padding:14px 16px}.result small{display:block;color:var(--muted);margin-bottom:5px}.result strong{font-size:19px;overflow-wrap:anywhere}.total{margin-top:16px;text-align:center;border:1px solid var(--gold);border-radius:15px;padding:18px;background:#2a2930}.total small{color:var(--gold);font-weight:700}.total strong{display:block;font-size:30px;margin-top:4px}.note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:12px}
+@media(min-width:560px){.results{grid-template-columns:1fr 1fr}.panel{padding:24px}}
+</style>
+</head>
+<body>
+<header><h1>⚡ CALCULATOR SPEED</h1><p>Kalkulator speed dan hasil AFK</p></header>
+<main>
+<section class="panel">
+<h2>⚙️ Pengaturan Kalkulator</h2>
+<label for="treadmill">🏃 Treadmill</label>
+<select id="treadmill">
+<option value="2">Treadmill — +2</option><option value="5">Sci-Fi Treadmill — +5</option>
+<option value="12">Flame Treadmill — +12</option><option value="30">Celebrity Treadmill — +30</option>
+<option value="80">Golden Treadmill — +80</option><option value="100">Mythic Treadmill — +100</option>
+<option value="200">Lucky Block Treadmill — +200</option><option value="500">Hacker Treadmill — +500</option>
+<option value="1000">Demonic Treadmill — +1K</option><option value="2000">Angelic Treadmill — +2K</option>
+<option value="3000">Astral Treadmill — +3K</option><option value="8500">Enchanted Forest — +8.500K / langkah</option>
+</select>
+<label for="trail">✨ Trail</label>
+<select id="trail">
+<option value="1.5">Abu-abu — x1.5</option><option value="2">Hijau — x2</option><option value="2.5">Biru — x2.5</option>
+<option value="3">Ungu — x3</option><option value="3.5">Emas — x3.5</option><option value="4">Merah — x4</option>
+<option value="5">Galaksi — x5</option><option value="7">Rahasia — x7</option><option value="10">Abadi — x10</option>
+<option value="14">Ilahi — x14</option><option value="20">Bunga Bulan — x20</option>
+</select>
+<label for="multiplier">🚀 Multiplier</label>
+<select id="multiplier">
+<option value="1">x1</option><option value="2">x2</option><option value="4">x4</option><option value="8">x8</option>
+<option value="16">x16</option><option value="32">x32</option><option value="64">x64</option><option value="128">x128</option>
+<option value="256">x256</option><option value="512">x512</option><option value="1000">x1K</option>
+<option value="2000">x2K</option><option value="3000">x3K</option><option value="4000">x4K</option>
+</select>
+<label for="speed">⚡ Speed Sekarang</label>
+<input id="speed" type="text" inputmode="text" autocomplete="off" placeholder="Contoh: 120 atau abcd...z" value="0" maxlength="100">
+<p class="hint">Bisa mengetik angka, huruf a–z, atau gabungan teks. Kalau diisi huruf, teks akan ditampilkan sebagai speed; perhitungan gain memakai angka saja.</p>
+<label for="hours">💤 AFK Berapa Jam?</label>
+<input id="hours" type="number" min="0" max="100000" step="0.5" value="1">
+<button class="btn" id="calculate">⚡ HITUNG SEKARANG</button>
+<p class="hint" id="status" aria-live="polite">Masukkan data lalu hitung.</p>
+</section>
+<section class="panel">
+<h2>📊 HASIL PERHITUNGAN</h2>
+<div class="results">
+<div class="result"><small>Speed Sekarang</small><strong id="outSpeed">0</strong></div>
+<div class="result"><small>Gain / Step</small><strong id="step">0</strong></div>
+<div class="result"><small>Gain / Detik (perkiraan 1 step/detik)</small><strong id="sec">0</strong></div>
+<div class="result"><small>Gain / Menit</small><strong id="minute">0</strong></div>
+<div class="result"><small>Gain / Jam</small><strong id="hour">0</strong></div>
+<div class="result"><small>Yang Didapat Saat AFK</small><strong id="afk">0</strong></div>
+</div>
+<div class="total"><small>TOTAL HASIL AFK</small><strong id="total">0</strong></div>
+<p class="note">Catatan: hasil gain adalah estimasi berdasarkan pilihan treadmill, trail, multiplier, dan asumsi 1 step per detik.</p>
+</section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const fmt=n=>Number.isFinite(n)?new Intl.NumberFormat('id-ID',{maximumFractionDigits:2}).format(n):'0';
+$('calculate').addEventListener('click',()=>{
+ const raw=$('speed').value.trim();
+ const numeric=raw!=='' && /^[+-]?(?:\d+\.?\d*|\.\d+)$/.test(raw);
+ const current=numeric?Number(raw):0;
+ const step=Number($('treadmill').value)*Number($('trail').value)*Number($('multiplier').value);
+ const perSec=step, perMin=perSec*60, perHour=perMin*60;
+ const hours=Math.max(0,Number($('hours').value)||0), gain=perHour*hours;
+ $('outSpeed').textContent=raw||'—';
+ $('step').textContent=fmt(step);$('sec').textContent=fmt(perSec);
+ $('minute').textContent=fmt(perMin);$('hour').textContent=fmt(perHour);
+ $('afk').textContent=fmt(gain);$('total').textContent=fmt((numeric?current:0)+gain);
+ $('status').textContent=numeric?'Perhitungan selesai.':'Teks speed ditampilkan, tetapi bukan angka; total hanya menambahkan hasil AFK.';
+});
+$('speed').addEventListener('input',()=>{ $('outSpeed').textContent=$('speed').value||'—'; });
+</script>
+</body>
+</html>
